@@ -1,0 +1,98 @@
+<html>
+<head>
+<link  href="./css/bootstrap.min.css" rel="stylesheet"></link>
+<title>Home</title>
+</head>
+
+<body>
+	<br>
+	<button type="button" class="btn btn-primary" id="call">call  friend</button>
+	<input type="text" id="username"></input><br>
+	<video id="video"></video>
+	
+<!-- script references -->
+		<script src="./js/jquery-2.1.4.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="./js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/locales/bootstrap-datetimepicker.fr.js" charset="UTF-8"></script>
+		<script src="https://cdn.socket.io/socket.io-1.3.5.js"></script>
+<!--script -->
+<script>
+var id="";
+$(document).ready(function(){
+	
+	 $.ajax({
+		 type: "POST",
+		 url:"php/getSessionid.php",
+		 success: function(sessionId){
+			  alert(sessionId);
+                          var id=sessionId;
+			  var mySDP;
+			  var description;
+			var pc_config = {"iceServers": [{"url": "stun:stun.l.google.com:19302"}]};
+				 pc = new mozRTCPeerConnection(pc_config);
+			  navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+			  if (navigator.getUserMedia) {
+   				navigator.getUserMedia({ video:true, audio:true},
+      				function(stream) {
+        					var video = document.querySelector('video');
+         					video.src = window.URL.createObjectURL(stream);
+         					video.onloadedmetadata = function(e) {
+          				        video.play();
+						pc.addStream(stream);
+
+  pc.createOffer(function(offer) {
+    pc.setLocalDescription(mySDP=new mozRTCSessionDescription(offer), function() {
+      // send the offer to a server to be forwarded to the friend you're calling.
+	console.log(mySDP.sdp);
+    }, // CONTINUA DA QUA E VEDI COSA DEVI FARE AL RICEVIMENTO DEL PACCHETTO SDP
+function (err) { alert(err); });
+  }, function (err) { alert(err);});
+         					};
+     					 },
+      				function(err) {
+         				console.log("The following error occured: " + err.name);
+      					}
+				);
+				}else {
+ 					  console.log("getUserMedia not supported");
+				}
+			  var socket = io('http://192.168.199.131:8080/');
+			  socket.emit('autentication',description={ email: id,
+							sdp: mySDP
+							});
+                          socket.on('message', function(data){
+   				 console.log(data.servermessage + " " + data.number);
+			  });
+			  socket.on('relayCall',function(data){
+	 		       console.log(data['client']);
+			       SDP= data.sdp;
+	 		       console.log(SDP);
+			       pc.setRemoteDescription(new mozRTCSessionDescription(SDP),
+							function(){alert("success");},
+							function(){alert("error");});
+
+
+	    		    //$("#myModal").modal7('show');
+				// modal per accettare o rifiutare la chiamata relayAnswer
+			});
+			$("#call").click(function(){
+				to=$("#username").val();
+				console.log($("#username").val());
+				socket.emit('relayCall',{ email : id,
+							sdp: mySDP,
+							to: to
+							}
+			);
+			});
+			/*var interval = setInterval(function() { // intervall
+				console.log('Refresh friend');
+				
+			},1000);*/
+		 }
+	 });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<title>Register</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<link href="./css/bootstrap.min.css" rel="stylesheet" media="screen">
+		<link href="./css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+		<link href="css/styles.css" rel="stylesheet">
+	</head>
+	<body>
+		<div id="loginModal" class="modal show" >
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="text-center">Register</h1>
+					</div>
+					<div class="modal-body">
+						<form class="form col-md-12 center-block" action="php/reg.php" method="POST">
+							<div class="form-group">
+								<label for="inputEmail">Email</label>
+								<div class="input-group" >
+									<input class="form-control input-sm" type="text" placeholder="Email" name ="email" id="email" >
+									<span class="input-group-addon" id="back1"><span  id="okmail" class="glyphicon glyphicon-minus"></span></span>
+								</div>
+							</div>
+							<div class="form-group">
+							<label for="inputPassword">Password</label>
+								<input type="password" class="form-control input-sm" placeholder="Password" name="pswd" id="pswd">
+							</div>
+							<div class="form-group">
+								<label for="inputUsern">Username</label>
+								<div class="input-group" >
+									<input class="form-control input-sm" type="text" placeholder="Username" name ="username" id="username" >
+									<span class="input-group-addon" id="back2"><span id="okusr" class="glyphicon glyphicon-minus"></span></span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="inputName">First Name</label>
+								<input type="text" class="form-control input-sm" placeholder="First Name"name="firstname" id="firstname">
+							</div>
+							<div class="form-group">
+								<label for="inputSur">Last Name</label>
+								<input type="text" class="form-control " placeholder="Last Name" name="lastname" id="lastname">
+							</div>
+							<div class="form-group">
+								<label for="dtp_input2">Birth Date</label>
+								<div class="input-group date form_date" >
+									<input class="form-control input-sm" type="text" placeholder="Birth Date" readonly  name ="date" id="date" >
+									<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+									<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="inputCountry">Country</label>
+								<input type="text" class="form-control input-sm" placeholder="Country" name="country" id="country">
+							</div>
+							<div class="form-group">
+								<label for="inputCountry">City</label>
+								<input type="text" class="form-control input-sm" placeholder="City" name="city" id="city">
+							</div>
+							<div class="form-group">
+								<label for="inputGender">Gender</label>
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-primary btn-sm">
+										<input type="radio" name="gender" value="male" /> Male
+									</label>
+									<label class="btn btn-danger btn-sm">
+										<input type="radio" name="gender" value="female" /> Female
+									</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<button class="btn btn-info btn-lg  btn-block" id="register" >Register</button>
+							</div>
+						</form>
+					</div>
+						
+					<div class="modal-footer">
+						<div class="col-md-12">
+						<button class="btn btn-primary" onclick="window.location.href='./login.html'">Sign In</button>
+						</div>	
+					</div>
+				</div>
+			</div>
+		</div>
+	<!-- script references -->
+		<script src="./js/lib/jquery-2.1.4.js"></script>
+		<script src="js/lib/bootstrap.min.js"></script>
+		<script type="text/javascript" src="./js/lib/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="./js/lib/locales/bootstrap-datetimepicker.fr.js" charset="UTF-8"></script>
+	<!--script -->
+	
+	<script type="text/javascript">
+
+		$('.form_date').datetimepicker({
+			language:  'en',
+			format:'yyyy-mm-d',
+			weekStart: 1,
+			autoclose: 1,
+			todayHighlight: 1,
+			startView: 2,
+			minView: 2,
+			forceParse: 0
+		});
+	</script>
+	<script>
+		var email= $("#email").val();
+		var user=$("#username").val();
+		var firstname=$("#firstname").val();
+		var lastname=$("#lastname").val();
+		var answerUsr;
+		var answerEmail;
+		
+		$(document).ready(function(){
+		$("#register").prop("disabled", true);
+			$("#username").change(
+				function(){
+				var user=$("#username").val();
+				var firstname=$("#firstname").val();
+				var lastname=$("#lastname").val();
+					$.ajax({
+						type: "POST",
+						url: "php/checkUsername.php",
+						data: "username="+$("#username").val() +"&email="+$("#email").val(),
+						dataType: "html",
+						success: 
+						function (answer){
+							answerUsr=answer;		
+							if(answer=="ok"){
+								$("#okusr").removeClass("glyphicon glyphicon-minus");
+								$("#okusr").removeClass("glyphicon glyphicon-remove");
+								$("#okusr").addClass("glyphicon glyphicon-ok");
+								$("#back2").css("background-color", "#5cb85c");
+								if(answerEmail=="ok" && answerUsr=="ok" && firstname!="" && lastname!=""){
+									$("#register").prop('disabled', false);
+								}
+							}
+							else{
+								$("#okusr").removeClass("glyphicon glyphicon-minus");
+								$("#okusr").removeClass("glyphicon glyphicon-ok");
+								$("#okusr").addClass("glyphicon glyphicon-remove");
+								$("#register").prop("disabled", true);
+								$("#back2").css("background-color", "#d9534f");
+						}
+						}
+					});
+				}
+			)
+			$("#email").change(
+				function(){
+				var user=$("#email").val();
+				var firstname=$("#firstname").val();
+				var lastname=$("#lastname").val();
+					$.ajax({
+						type: "POST",
+						url: "php/checkEmail.php",
+						data: "username="+$("#username").val() +"&email="+$("#email").val(),
+						dataType: "html",
+						success: 
+						function (answer){
+							answerEmail=answer;
+							if(answer=="ok"){
+								$("#okmail").removeClass("glyphicon glyphicon-minus");
+								$("#okmail").removeClass("glyphicon glyphicon-remove");
+								$("#okmail").addClass("glyphicon glyphicon-ok");
+								 $("#back1").css("background-color", "#5cb85c");
+								if(answerEmail=="ok" && answerUsr=="ok" && firstname!="" && lastname!=""){
+									$("#register").prop('disabled', false);
+								}
+							}
+							else{
+								$("#okmail").removeClass("glyphicon glyphicon-minus");
+								$("#okmail").removeClass("glyphicon glyphicon-ok");
+								$("#okmail").addClass("glyphicon glyphicon-remove");
+								$("#register").prop("disabled", true);
+								$("#back1").css("background-color", "#d9534f");
+						}
+						}
+					});
+				}
+			)
+			$("#lastname").change(
+				function(){
+				 email= $("#email").val();
+				user=$("#username").val();
+				firstname=$("#firstname").val();
+				lastname=$("#lastname").val();
+					if(answerEmail=="ok" && answerUsr=="ok" && firstname!="" && lastname!=""){
+									$("#register").prop('disabled', false);
+					}
+					else{
+						$("#register").prop("disabled", true);
+					}			
+				}
+			
+			)
+			
+			$("#firstname").change(
+				function(){
+				 email= $("#email").val();
+				user=$("#username").val();
+				firstname=$("#firstname").val();
+				lastname=$("#lastname").val();
+					if(answerEmail=="ok" && answerUsr=="ok" && firstname!="" && lastname!=""){
+									$("#register").prop('disabled', false);
+					}
+					else{
+						$("#register").prop("disabled", true);
+					}			
+				}
+			
+			)
+		}
+		)
+	</script>
+	</body>
+</html>

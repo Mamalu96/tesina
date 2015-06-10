@@ -1,0 +1,38 @@
+<html>
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="https://cdn.socket.io/socket.io-1.3.5.js"></script>
+<script src="http://localhost:8080/socket.io/socket.io.js"></script>
+<link  href="./css/bootstrap.min.css" rel="stylesheet"></link>
+</head>
+<body>
+	
+ <button type="button" class="btn btn-primary" id="call">call host2</button>
+
+</body>
+</html>
+<script>
+$(document).ready(function(){
+var id=0;
+$.ajax({
+ url:"getSessionid.php",
+     success:function(sessionId){
+		id=sessionId; 
+	}
+});
+  var socket =new io('http://localhost:8080/');
+socket.emit('autentication','host1');
+socket.on('message', function(data){
+    console.log(data);
+});
+socket.on('relayCall',function(data){
+	        console.log(data);
+	        //$("#myModal").modal('show');
+});
+	$("#call").click(function(){
+		console.log("INVIO");
+		socket.emit('relayCall','host2');
+		});
+});
+// l'invio deve avvenire da bottone e capisci cosa devi inviare all'altro client per chiamarlo
+</script>
