@@ -71,7 +71,7 @@ $(document).ready(function(){
    								console.log("getUserMedia not supported");
 						};
 				};// close start
-			  var socket = io('http://192.168.199.133:8080/'); // initialize WebSocket
+			  var socket = io('http://ec2-52-26-176-174.us-west-2.compute.amazonaws.com:8080/'); // initialize WebSocket
 
 			  socket.emit('autentication',description={ email: id}); // Autenticate the client
                         socket.on('message', function(data){
