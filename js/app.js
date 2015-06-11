@@ -10,7 +10,7 @@ $(document).ready(function(){
               var id=sessionId;
 			  var mySDP="";
 			  var description;
-			  var pc_config= {"iceServers":[{url:'stun:stun.l.google.com:19302'}];
+			  var pc_config= {"iceServers":[{url:'stun:stun.l.google.com:19302'}]};
 			  var pc= null;
 			  var candidate={};
 			  var i=0;
