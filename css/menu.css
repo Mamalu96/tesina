@@ -42,7 +42,7 @@ a {
  * -- LAYOUT STYLES --
  * This layout consists of three main elements, `#nav` (navigation bar), `#list` (email list), and `#main` (email content). All 3 elements are within `#layout`
  */
-#layout, #nav, #list, #main {
+#layout, #nav,#main {
     margin: 0;
     padding: 0;
 }
@@ -208,7 +208,7 @@ a {
     }
 
     /* These are position:fixed; elements that will be in the left 500px of the screen */
-    #nav, #list {
+    #nav {
         position: fixed;
         top: 0;
         bottom: 0;
@@ -232,10 +232,8 @@ a {
     }
 
     #list {
-        margin-left: -350px;
         width: 100%;
         height: 33%;
-        border-bottom: 1px solid #ddd;
     }
 
     #main {
@@ -259,10 +257,8 @@ a {
 
     /* This will take up the entire height, and be a little thinner */
     #list {
-        margin-left: -350px;
         width:350px;
         height: 100%;
-        border-right: 1px solid #ddd;
     }
 
     /* This will now take up it's own column, so don't need position: fixed; */
