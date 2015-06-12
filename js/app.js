@@ -10,7 +10,11 @@ $(document).ready(function(){
               var id=sessionId;
 			  var mySDP="";
 			  var description;
+<<<<<<< HEAD
 			   var pc_config = {"iceServers": [{"url": "stun:stun.l.google.com:19302"},
+=======
+			  var pc_config = {"iceServers": [{"url": "stun:stun.l.google.com:19302"},
+>>>>>>> d0d3a754c8e2588a90baee49691744649c62b383
 			  {"url":"turn:ec2-52-26-176-174.us-west-2.compute.amazonaws.com", "username":"admin","credential":"admin"}]};
 			  var pc= null;
 			  var candidate={};
