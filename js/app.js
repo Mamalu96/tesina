@@ -10,8 +10,8 @@ $(document).ready(function(){
               var id=sessionId;
 			  var mySDP="";
 			  var description;
-			  var pc_config = {“iceServers”: [{“url”: “stun:stun.l.google.com:19302″},
-			  {“url”:”turn:admin@ec2-52-26-176-174.us-west-2.compute.amazonaws.com“, “credential”:"admin"}]};
+			  var pc_config = {"iceServers": [{"url": "stun:stun.l.google.com:19302"},
+			  {"url":"turn:admin@ec2-52-26-176-174.us-west-2.compute.amazonaws.com", "username":"admin","credential":"admin"}]};
 			  var pc= null;
 			  var candidate={};
 			  var i=0;
