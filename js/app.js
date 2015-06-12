@@ -10,7 +10,8 @@ $(document).ready(function(){
               var id=sessionId;
 			  var mySDP="";
 			  var description;
-			  var pc_config= {"iceServers":[{url:'stun:stun.l.google.com:19302'}];
+			   var pc_config = {"iceServers": [{"url": "stun:stun.l.google.com:19302"},
+			  {"url":"turn:ec2-52-26-176-174.us-west-2.compute.amazonaws.com", "username":"admin","credential":"admin"}]};
 			  var pc= null;
 			  var candidate={};
 			  var i=0;
@@ -186,6 +187,7 @@ $(document).ready(function(){
 	 		       			},function(){alert("get user media is not supported");}); // close the get user media
 				}
 				$("#showFriend").click(function(){
+					alert("hello");
 					$.ajax({
 						type: "POST",
 						url:"php/friend.php",
