@@ -13,26 +13,19 @@
 	<div id="nav" class="pure-u">
         <a href="#" class="nav-menu-button">Menu</a>
 
-        <div class="nav-inner">
-            <div class="pure-menu">
+        <div class="pure-menu">
                 <ul class="pure-menu-list">
-                    <li class="pure-menu-item"><a href="#" class="pure-menu-link">Request <span class="email-count">(2)</span></a></li>
-                    <li class="pure-menu-item"><a href="#" class="pure-menu-link">Important</a></li>
-                    <li class="pure-menu-item"><a href="#" class="pure-menu-link">Sent</a></li>
-                    <li class="pure-menu-item"><a href="#" class="pure-menu-link">Drafts</a></li>
-                    <li class="pure-menu-item"><a href="#" class="pure-menu-link">Trash</a></li>
-                    <li class="pure-menu-heading">Labels</li>
-                    <li class="pure-menu-item"><a href="#" class="pure-menu-link"><span class="email-label-personal"></span>Personal</a></li>
-                    <li class="pure-menu-item"><a href="#" class="pure-menu-link"><span class="email-label-work"></span>Work</a></li>
-                    <li class="pure-menu-item"><a href="#" class="pure-menu-link"><span class="email-label-travel"></span>Travel</a></li>
+                <li class="pure-menu-item"><a href="home.html" class="pure-menu-link"><span class="email-label-travel"></span>Home</a></li>
+                    <li class="pure-menu-item"><a href="request.html" class="pure-menu-link"><span class="email-label-travel"></span>Request</a></li>
+                    <li class="pure-menu-item"><a href="add.html" class="pure-menu-link"><span class="email-label-travel"></span>Add Friend</a></li>
+                    <li class="pure-menu-item"><a href="friend.html" class="pure-menu-link"><span class="email-label-travel"></span>Friend</a></li>
                 </ul>
             </div>
-        </div>
     </div>
 </div>
 <div class="c" style="position:absolute;left:20%;right:10%;top:20px;">
 <div class="input-group">
-      <input type="text" class="form-control" placeholder="Search for...">
+      <input type="text" class="form-control" id="data" placeholder="Search for...">
       <span class="input-group-btn">
         <button class="btn btn-default" id="search" type="button" style="background-color:#5BC0DE"><span  class="glyphicon glyphicon-search"></span></button>
       </span>
@@ -41,9 +34,6 @@
 <!-- script references -->
 		<script src="./js/lib/jquery-2.1.4.js"></script>
 		<script src="js/lib/bootstrap.min.js"></script>
-		<script src="https://cdn.socket.io/socket.io-1.3.5.js"></script>
-		<script src="./js/adapter.js" type="text/javascript"></script>
-		<script src="./js/app.js" type="text/javascript"></script>
 		<script src="js/lib/bootbox.min.js"></script>
 <!--script -->
 
@@ -53,20 +43,34 @@
     
 $("#search").click(function(){
                     $.ajax({
-                        type: "POST",
-                        url:"sear.php",
+                        type: "GET",
+                        url:"./php/sear.php",
                         data : "data="+$("#data").val(),
                         success : function(row){
+                            console.log(row);
                             if(row!= "none"){
                                 var obj = JSON.parse(row);
+                                $("#lista").remove();
                                 var a= 0;
-                                $("#c").append("<ul  id='list' class='list-group' style='position:absolute;left:20%;right:10%;top:10%;'></ul>")
+                                $(".c").append("<ul  id='lista' class='list-group' style='position:absolute;left:20%;right:10%;top:50px;'></ul>")
                                 while(obj[a]){
-                                //alert(obj[a].email1);
-                                        $("#list").append("<a href='#' class='list-group-item'>"+ obj[a].email+"</a>")
+                                console.log("1");
+                                        $("#lista").append("<a href='#' id='req' class='list-group-item'>"+ obj[a].email +"</a>")
                                     a= a+1;
                                    
                                 }
+                                $("#req").click(function(e){
+                                    console.log("ok");
+                                    var re = $(e.target).text();
+                                        $.ajax({
+                                            type:"POST",
+                                            url: "./php/addreq.php",
+                                            data: "data="+ re,
+                                            success : function(){
+                                                $(e.target).css("background-color","green");
+                                            }
+                                        })
+                                })
                             } else {
                                 alert("None");
                             }
@@ -74,7 +78,7 @@ $("#search").click(function(){
                     })
                 });
 
-    }
+    });
 </script>
 
 </body>

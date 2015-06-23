@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<link  href="./css/bootstrap.min.css" rel="stylesheet"></link>
+	<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
+	<link  href="./css/body.css" rel="stylesheet"></link>
+	<link  href="./css/menu.css" rel="stylesheet"></link>
+	<title>Add Friends</title>
+
+</head>
+<body>
+<div id="layout" class="content pure-g">
+	<div id="nav" class="pure-u">
+        <a href="#" class="nav-menu-button">Menu</a>
+
+        <div class="pure-menu">
+                <ul class="pure-menu-list">
+                <li class="pure-menu-item"><a href="home.html" class="pure-menu-link"><span class="email-label-travel"></span>Home</a></li>
+                    <li class="pure-menu-item"><a href="request.html" class="pure-menu-link"><span class="email-label-travel"></span>Request</a></li>
+                    <li class="pure-menu-item"><a href="add.html" class="pure-menu-link"><span class="email-label-travel"></span>Add Friend</a></li>
+                    <li class="pure-menu-item"><a href="friend.html" class="pure-menu-link"><span class="email-label-travel"></span>Friend</a></li>
+                </ul>
+            </div>
+    </div>
+</div>
+<table id="table" class="table" style="position:absolute;left:160px;top:10px;background-color:white;">
+<tr> <th>DA</th><th>Tipo</th><th>Accetta</th> <th>Rifiuta</th> </tr>
+</table>
+        <script src="./js/lib/jquery-2.1.4.js"></script>
+        <script src="js/lib/bootstrap.min.js"></script>
+        <script src="js/lib/bootbox.min.js"></script>
+<script>
+$(document).ready(function(){
+        $.ajax({
+            type:"POST",
+            url:"php/showreq.php",
+            success: function(row){
+                if(row=="none"){
+                    alert("No new request");
+                }   else
+                {
+                    var obj = JSON.parse(row);
+                    var a= 0;
+                     while(obj[a]){
+                                console.log(a);
+                                        $("#table").append("<tr><td>"+ obj[a].idRequest +"</td>"
+                                            +"<td>" + obj[a].frm+ "</td>" +
+                                            "<td>" +  "<button type='button' value='"+obj[a].idRequest+"' class='btn btn-primary ' onclick='confirm(this.value);'>Accept" + "</td>" +
+                                            "<td>" + "<button type='button' class='btn btn-danger' onclick='refuse(this.value);'  value='"+obj[a].idRequest+"'>Refuse"+ "</td>" +
+                                            "</tr>");
+                                            a= a+1;
+                }
+            }
+        }
+});
+});
+
+function confirm(id){
+    alert(id);
+    $.ajax({
+        type:"POST",
+        url:"php/accept.php",
+        data:"data=" + id
+    });
+};
+function refuse(id){
+     $.ajax({
+        type:"POST",
+        url:"php/refuse.php",
+        data: "data="+id
+    });
+
+}
+</script>
+</body>
