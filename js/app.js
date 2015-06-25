@@ -107,7 +107,7 @@ $(document).ready(function(){
 	 		       	else if(data.type=='answer'){
 	 		       		console.log(data.sdp.sdp);
 	 		       		var answer= new RTCSessionDescription(data.sdp);
-	 		       		pc.setRemoteDescription(answer,function(){alert("ok");},function(){alert("no");});
+	 		       		pc.setRemoteDescription(answer,function(){console.log("ok");},function(){console.log("no");});
 	 		       	}
 	 		        if (data.type=='candidate'){ // store the candidate
 	 		       		console.log(data.candidate);
@@ -140,6 +140,7 @@ $(document).ready(function(){
 	 		       		remote[friend].onaddstream= function(event){
      				 			console.log("addremote");
      				 			remoteVideo[friend] = document.createElement('video');
+     				 			remoteVideo[friend].style= "position:absolute;left:790;"
      				 			document.body.appendChild(remoteVideo[friend]);
      				 	 		attachMediaStream(remoteVideo[friend],event.stream);
      				 	}
@@ -187,7 +188,6 @@ $(document).ready(function(){
 	 		       			},function(){alert("get user media is not supported");}); // close the get user media
 				}
 				$("#showFriend").click(function(){
-					alert("hello");
 					$.ajax({
 						type: "POST",
 						url:"php/friend.php",
